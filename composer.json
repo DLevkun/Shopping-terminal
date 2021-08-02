@@ -1,0 +1,15 @@
+{
+    "name": "dasha/shopping_terminal",
+    "authors": [
+        {
+            "name": "DLevkun",
+            "email": "levkun.dasha@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "squizlabs/php_codesniffer": "3.*"
+    },
+  "require": {
+    "ext-mysqli": "*"
+  }
+}
