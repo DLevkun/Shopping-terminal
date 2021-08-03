@@ -14,20 +14,10 @@ spl_autoload_register(function ($className) {
 $id = $_SESSION['id'];
 $quantity = $_SESSION['quantity'];
 
-//Set connection
-$db = new Controller\DBConfig();
-$connection = $db->createConnection("localhost:3307", "root", "123D-l456dl", "shopping");
+$products = new Controller\ProductList("select * from products where product_id = {$id}", "shopping");
+$product = $products->getProductList()[0];
 
-$query = "select * from products where product_id = {$id}";
-
-//Getting the result of the query from data base
-$querySetter = new Controller\QueryPerformer();
-$allRecords = $querySetter->setQuery($query, $connection);
-
-
-$row = mysqli_fetch_array($allRecords);
-$product = new Controller\Product($row['product_id'], $row['title'], $row['price'], $row['special_price'], $row['special_quantity']);
-$product_code = $row['product_code'];
+$product_code = $product->getProductCode();
 
 //In $_SESSION create an array with information about particular product if it doesn't exist
 if (!isset($_SESSION[$product_code])) {

@@ -50,27 +50,39 @@ class Product
         return $this->special_quantity;
     }
 
+    /**
+     * @return string
+     */
+    public function getProductCode(): string
+    {
+        return $this->product_code;
+    }
+
+
+
     private $product_id;
     private $title;
     private $price;
     private $special_price;
     private $special_quantity;
+    private $product_code;
     private $calculatedPrice;
 
-    public function __construct(string $id, string $title, string $price, $spec_price, $spec_quantity)
+    public function __construct(string $id, string $title, string $price, string $product_code, $spec_price = null, $spec_quantity = null)
     {
         $this->product_id = $id;
         $this->title = $title;
         $this->price = $price;
         $this->special_price = $spec_price;
         $this->special_quantity = $spec_quantity;
+        $this->product_code = $product_code;
         $this->calculatedPrice = 0;
     }
 
     /**
      * Creates html template with information about particular product
      * @return string
-     * @acess public
+     * @access public
      */
     public function createItem(): string
     {
@@ -104,6 +116,7 @@ class Product
      * Defines the price of chosen products depending on their quantity and price
      * @param $quantity
      * @return float|int
+     * @access public
      */
     public function setPrice($quantity)
     {
