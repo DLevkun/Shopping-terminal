@@ -11,21 +11,8 @@ spl_autoload_register(function ($className) {
     }
 });
 
-$db = new Controller\DBConfig();
-$connection = $db->createConnection("localhost:3307", "root", "123D-l456dl", "shopping");
-
-//Get all records from database
-$query = "select * from products";
-
-$querySetter = new Controller\QueryPerformer();
-$allRecords = $querySetter->setQuery($query, $connection);
-
-$products = [];
-
-while ($row = mysqli_fetch_array($allRecords)) {
-    $product = new Controller\Product($row['product_id'], $row['title'], $row['price'], $row['special_price'], $row['special_quantity']);
-    $products[] = $product;
-}
+$products = new \Controller\ProductList("select * from products", "shopping");
+$productList = $products->getProductList();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,10 +30,10 @@ while ($row = mysqli_fetch_array($allRecords)) {
         <?php
 
         //Create a row with two columns of products
-        for ($i = 0; $i <= count($products)/2; $i = $i + 2) {
+        for ($i = 0; $i <= count($productList)/2; $i = $i + 2) {
             print "<div class='row align-items-center'>"
-                       .$products[$i]->createItem().
-                        $products[$i+1]->createItem().
+                       .$productList[$i]->createItem().
+                        $productList[$i+1]->createItem().
                    "</div>";
         }
         ?>

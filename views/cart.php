@@ -37,33 +37,28 @@ spl_autoload_register(function ($className) {
           <h1>The cart is empty</h1>
       </div>";
     } else {
-        $total = 0;
-
-        //
-        $session_keys = array_keys($_SESSION);
-        foreach ($session_keys as $key) {
-            $low_string = strtolower($_SESSION[$key]['product']->getTitle());
-            $quantity = $_SESSION[$key]['quantity'];
-            $calculatedPrice = $_SESSION[$key]['product']->setPrice($quantity);
+        $arrayOfProducts = Controller\ProductList::unpackList($_SESSION);
+        $total = Controller\ProductList::sumList($arrayOfProducts, 'price');
+        foreach ($arrayOfProducts as $product) {
+            $low_string = strtolower($product['title']);
             print "<div class='product'>
                    <div class='img'>
                        <img src='public/img/{$low_string}.png' alt='product'>
                    </div>
                    <div class='description'>
-                       <h2 class='title'>{$_SESSION[$key]['product']->getTitle()} - {$quantity} pc.</h2>
-                       <p class='price'>{$calculatedPrice}£</p>
+                       <h2 class='title'>{$product['title']} - {$product['quantity']} pc.</h2>
+                       <p class='price'>{$product['price']}£</p>
                    </div>
                     <div class='delete'>
-                        <a href='delete/{$key}'> <img src='public/img/delete.png' alt='delete'> </a>
+                        <a href='delete/{$product['code']}'> <img src='public/img/delete.png' alt='delete'> </a>
                     </div>
                </div>";
-            $total = $total + $calculatedPrice;
         }
     }
     ?>
 
     <div class="total">
-      <h1>TOTAL: <span> <?php print isset($total) ? $total : 0 ?> </span> </h1>
+      <h1>TOTAL: <span> <?php print $total ?? 0 ?> </span> </h1>
     </div>
 
     <div class="btn-pay">
