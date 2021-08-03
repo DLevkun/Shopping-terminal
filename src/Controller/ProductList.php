@@ -29,7 +29,7 @@ class ProductList
         $allRecords = $querySetter->setQuery($query, $connection);
 
         while ($row = mysqli_fetch_array($allRecords)) {
-            $this->productList[] = new Product($row['product_id'], $row['title'], $row['price'], $row['special_price'], $row['special_quantity'], $row['product_code']);
+            $this->productList[] = new Product($row['product_id'], $row['title'], $row['price'], $row['product_code'], $row['special_price'], $row['special_quantity']);
         }
     }
 
